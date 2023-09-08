@@ -1,0 +1,67 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Khronos Glslang Reference Front End; 11
+; Bound: 35
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Vertex %main "main" %_ %position
+               OpSource GLSL 460
+               OpName %main "main"
+               OpName %gl_PerVertex "gl_PerVertex"
+               OpMemberName %gl_PerVertex 0 "gl_Position"
+               OpMemberName %gl_PerVertex 1 "gl_PointSize"
+               OpMemberName %gl_PerVertex 2 "gl_ClipDistance"
+               OpMemberName %gl_PerVertex 3 "gl_CullDistance"
+               OpName %_ ""
+               OpName %PushConstants "PushConstants"
+               OpMemberName %PushConstants 0 "transform"
+               OpName %pushConstants "pushConstants"
+               OpName %position "position"
+               OpMemberDecorate %gl_PerVertex 0 BuiltIn Position
+               OpMemberDecorate %gl_PerVertex 1 BuiltIn PointSize
+               OpMemberDecorate %gl_PerVertex 2 BuiltIn ClipDistance
+               OpMemberDecorate %gl_PerVertex 3 BuiltIn CullDistance
+               OpDecorate %gl_PerVertex Block
+               OpMemberDecorate %PushConstants 0 ColMajor
+               OpMemberDecorate %PushConstants 0 Offset 0
+               OpMemberDecorate %PushConstants 0 MatrixStride 16
+               OpDecorate %PushConstants Block
+               OpDecorate %position Location 0
+       %void = OpTypeVoid
+          %3 = OpTypeFunction %void
+      %float = OpTypeFloat 32
+    %v4float = OpTypeVector %float 4
+       %uint = OpTypeInt 32 0
+     %uint_1 = OpConstant %uint 1
+%_arr_float_uint_1 = OpTypeArray %float %uint_1
+%gl_PerVertex = OpTypeStruct %v4float %float %_arr_float_uint_1 %_arr_float_uint_1
+%_ptr_Output_gl_PerVertex = OpTypePointer Output %gl_PerVertex
+          %_ = OpVariable %_ptr_Output_gl_PerVertex Output
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+%mat4v4float = OpTypeMatrix %v4float 4
+%PushConstants = OpTypeStruct %mat4v4float
+%_ptr_PushConstant_PushConstants = OpTypePointer PushConstant %PushConstants
+%pushConstants = OpVariable %_ptr_PushConstant_PushConstants PushConstant
+%_ptr_PushConstant_mat4v4float = OpTypePointer PushConstant %mat4v4float
+    %v2float = OpTypeVector %float 2
+%_ptr_Input_v2float = OpTypePointer Input %v2float
+   %position = OpVariable %_ptr_Input_v2float Input
+    %float_0 = OpConstant %float 0
+    %float_1 = OpConstant %float 1
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+       %main = OpFunction %void None %3
+          %5 = OpLabel
+         %21 = OpAccessChain %_ptr_PushConstant_mat4v4float %pushConstants %int_0
+         %22 = OpLoad %mat4v4float %21
+         %26 = OpLoad %v2float %position
+         %29 = OpCompositeExtract %float %26 0
+         %30 = OpCompositeExtract %float %26 1
+         %31 = OpCompositeConstruct %v4float %29 %30 %float_0 %float_1
+         %32 = OpMatrixTimesVector %v4float %22 %31
+         %34 = OpAccessChain %_ptr_Output_v4float %_ %int_0
+               OpStore %34 %32
+               OpReturn
+               OpFunctionEnd

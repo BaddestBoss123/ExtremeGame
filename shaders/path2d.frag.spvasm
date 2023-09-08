@@ -1,0 +1,38 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Khronos Glslang Reference Front End; 11
+; Bound: 18
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %main "main" %oColor
+               OpExecutionMode %main OriginUpperLeft
+               OpSource GLSL 460
+               OpName %main "main"
+               OpName %oColor "oColor"
+               OpName %PushConstants "PushConstants"
+               OpMemberName %PushConstants 0 "color"
+               OpName %pushConstants "pushConstants"
+               OpDecorate %oColor Location 0
+               OpMemberDecorate %PushConstants 0 Offset 96
+               OpDecorate %PushConstants Block
+       %void = OpTypeVoid
+          %3 = OpTypeFunction %void
+      %float = OpTypeFloat 32
+    %v4float = OpTypeVector %float 4
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+     %oColor = OpVariable %_ptr_Output_v4float Output
+%PushConstants = OpTypeStruct %v4float
+%_ptr_PushConstant_PushConstants = OpTypePointer PushConstant %PushConstants
+%pushConstants = OpVariable %_ptr_PushConstant_PushConstants PushConstant
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+%_ptr_PushConstant_v4float = OpTypePointer PushConstant %v4float
+       %main = OpFunction %void None %3
+          %5 = OpLabel
+         %16 = OpAccessChain %_ptr_PushConstant_v4float %pushConstants %int_0
+         %17 = OpLoad %v4float %16
+               OpStore %oColor %17
+               OpReturn
+               OpFunctionEnd

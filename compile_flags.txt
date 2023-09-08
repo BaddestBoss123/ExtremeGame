@@ -1,0 +1,7 @@
+-Ilibs
+-Ishaders
+-Weverything
+-fenable-matrix
+-std=c2x
+-Wno-unsafe-buffer-usage
+-Wno-declaration-after-statement

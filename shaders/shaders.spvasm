@@ -1,0 +1,74 @@
+OpCapability Shader
+OpCapability ClipDistance
+
+%glsl = OpExtInstImport "GLSL.std.450"
+
+OpMemoryModel Logical Simple
+
+OpEntryPoint Vertex %path2d_vert "path2d_vert" %perVertex %position
+OpEntryPoint Fragment %empty_frag "empty_frag"
+
+OpExecutionMode %empty_frag OriginUpperLeft
+
+OpMemberDecorate %PerVertex 0 BuiltIn Position
+
+OpMemberDecorate %PushConstants 0 ColMajor
+OpMemberDecorate %PushConstants 0 Offset 0
+OpMemberDecorate %PushConstants 0 MatrixStride 16
+
+OpDecorate %PerVertex Block
+OpDecorate %PushConstants Block
+OpDecorate %position Location 0
+
+%void = OpTypeVoid
+%u32 = OpTypeInt 32 0
+%i32 = OpTypeInt 32 1
+%f32 = OpTypeFloat 32
+
+%vec2 = OpTypeVector %f32 2
+%vec3 = OpTypeVector %f32 3
+%vec4 = OpTypeVector %f32 4
+
+%mat4 = OpTypeMatrix %vec4 4
+
+%fnVoid = OpTypeFunction %void
+
+%PerVertex = OpTypeStruct
+	%vec4
+
+%PushConstants = OpTypeStruct
+	%mat4
+
+%u32_0 = OpConstant %u32 0
+%f32_0 = OpConstant %f32 0
+%f32_1 = OpConstant %f32 1
+
+%pIn_vec2 = OpTypePointer Input %vec2
+%pOut_PerVertex = OpTypePointer Output %PerVertex
+%pOut_vec4 = OpTypePointer Output %vec4
+%pPush_PushConstants = OpTypePointer PushConstant %PushConstants
+%pPush_mat4 = OpTypePointer PushConstant %mat4
+
+%perVertex = OpVariable %pOut_PerVertex Output
+%pushConstants = OpVariable %pPush_PushConstants PushConstant
+
+%position = OpVariable %pIn_vec2 Input
+
+%empty_frag = OpFunction %void None %fnVoid
+	%1 = OpLabel
+		OpReturn
+		OpFunctionEnd
+
+%path2d_vert = OpFunction %void None %fnVoid
+	%2 = OpLabel
+	%3 = OpAccessChain %pOut_vec4 %perVertex %u32_0
+	%4 = OpAccessChain %pPush_mat4 %pushConstants %u32_0
+	%5 = OpLoad %mat4 %4
+	%6 = OpLoad %vec2 %position
+	%7 = OpCompositeExtract %f32 %6 0
+	%8 = OpCompositeExtract %f32 %6 1
+	%9 = OpCompositeConstruct %vec4 %7 %8 %f32_0 %f32_1
+	%10 = OpMatrixTimesVector %vec4 %5 %9
+		OpStore %3 %10
+		OpReturn
+		OpFunctionEnd
