@@ -307,7 +307,7 @@ static inline void drawUINode(struct UINode* node) {
 				switch (node->onClick) {
 					case UI_ON_CLICK_NONE: break;
 					case UI_ON_CLICK_NO_EXIT:
-						ANIMATE(altF4Dialog.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), msElapsed);
+						ANIMATE(altF4Dialog.position, ((i16vec2){ center.x, center.y }), msElapsed);
 						ANIMATE(altF4Dialog.scale, 0, msElapsed);
 						break;
 					case UI_ON_CLICK_EXIT:
@@ -331,7 +331,7 @@ static inline void drawUINode(struct UINode* node) {
 							win32Fatal("PostMessageW", GetLastError());
 						break;
 					case UI_ON_CLICK_EXIT_GAME:
-						ANIMATE(nameDiv.position, ((i16vec2){ ((i16)windowWidth / 2) - 400, ((i16)windowHeight / 2) - 32 }), TRANSITION_ANIMATION_TIME);
+						ANIMATE(nameDiv.position, ((i16vec2){ center.x - 400, center.y - 32 }), TRANSITION_ANIMATION_TIME);
 						ANIMATE(nameDiv.scale, 255, TRANSITION_ANIMATION_TIME);
 
 						exitButton.position.old = exitButton.position.new;
@@ -350,7 +350,7 @@ static inline void drawUINode(struct UINode* node) {
 						if (sendto(sock, &(char){ 0 }, 1, 0, (struct sockaddr*)&serverAddress, (int){ sizeof(serverAddress) }) == SOCKET_ERROR)
 							win32Fatal("sendto", (DWORD)WSAGetLastError());
 
-						ANIMATE(nameDiv.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), 0);
+						ANIMATE(nameDiv.position, ((i16vec2){ center.x, center.y }), 0);
 						ANIMATE(nameDiv.scale, 0, 0);
 
 						for (u8 i = 0; i < nameDiv.childCount; i++)
@@ -368,15 +368,15 @@ static inline void drawUINode(struct UINode* node) {
 					case UI_ON_CLICK_LEAVE_LOBBY:
 						u32 delay = 0;
 						if (createRoomDialog.scale.new == 255) {
-							ANIMATE(createRoomDialog.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), 0);
+							ANIMATE(createRoomDialog.position, ((i16vec2){ center.x, center.y }), 0);
 							ANIMATE(createRoomDialog.scale, 0, 0);
 							delay = ANIMATION_TIME;
 						}
 
-						ANIMATE(roomList.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), delay);
+						ANIMATE(roomList.position, ((i16vec2){ center.x, center.y }), delay);
 						ANIMATE(roomList.scale, 0, delay);
 
-						ANIMATE(nameDiv.position, ((i16vec2){ ((i16)windowWidth / 2) - 400, ((i16)windowHeight / 2) - 32 }), delay + ANIMATION_TIME);
+						ANIMATE(nameDiv.position, ((i16vec2){ center.x - 400, center.y - 32 }), delay + ANIMATION_TIME);
 						ANIMATE(nameDiv.scale, 255, delay + ANIMATION_TIME);
 
 						for (u8 i = 0; i < nameDiv.childCount; i++)
@@ -386,14 +386,14 @@ static inline void drawUINode(struct UINode* node) {
 						exitButton.onClick = UI_ON_CLICK_EXIT;
 						break;
 					case UI_ON_CLICK_HOST_ROOM:
-						ANIMATE(createRoomDialog.position, ((i16vec2){ ((i16)windowWidth / 2) - 512, ((i16)windowHeight / 2) - 256 }), 0);
+						ANIMATE(createRoomDialog.position, ((i16vec2){ center.x - 512, center.y - 256 }), 0);
 						ANIMATE(createRoomDialog.scale, 255, 0);
 
 						node->position.startTime = msElapsed;
 						exitButton.scale.startTime = msElapsed;
 						break;
 					case UI_ON_CLICK_CLOSE_CREATE_ROOM_DIALOG:
-						ANIMATE(createRoomDialog.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), 0);
+						ANIMATE(createRoomDialog.position, ((i16vec2){ center.x, center.y }), 0);
 						ANIMATE(createRoomDialog.scale, 0, 0);
 
 						node->position.startTime = msElapsed;
@@ -402,16 +402,16 @@ static inline void drawUINode(struct UINode* node) {
 					case UI_ON_CLICK_CREATE_ROOM:
 						char description[64] = "room description";
 
-						ANIMATE(createRoomDialog.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), 0);
+						ANIMATE(createRoomDialog.position, ((i16vec2){ center.x, center.y }), 0);
 						ANIMATE(createRoomDialog.scale, 0, 0);
 
-						ANIMATE(roomList.position, ((i16vec2){ (i16)windowWidth / 2, (i16)windowHeight / 2 }), ANIMATION_TIME);
+						ANIMATE(roomList.position, ((i16vec2){ center.x, center.y }), ANIMATION_TIME);
 						ANIMATE(roomList.scale, 0, ANIMATION_TIME);
 
 						ANIMATE(exitButton.position, ((i16vec2){ (i16)windowWidth - 64, 32 }), TRANSITION_ANIMATION_TIME);
 						exitButton.onClick = UI_ON_CLICK_EXIT_GAME;
 
-						ANIMATE(transitionCircle, (u16)(__builtin_sqrtf((float)(surfaceCapabilities.currentExtent.width * surfaceCapabilities.currentExtent.width + surfaceCapabilities.currentExtent.height * surfaceCapabilities.currentExtent.height)) / 2.f), TRANSITION_ANIMATION_TIME);
+						ANIMATE(transitionCircle, (u16)(__builtin_sqrtf((float)(windowWidth * windowWidth + windowHeight * windowHeight)) / 2.f), TRANSITION_ANIMATION_TIME);
 
 						if (!cursorLocked) {
 							cursorLocked = TRUE;
